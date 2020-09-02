@@ -1,36 +1,3 @@
-// 小写认为是原生的标签名, 大写的话,是class或者函数  
-export function createElement(tagName, attributes, ...children) {
-
-
-  let elem = document.createElement(tagName)
-
-  if (typeof tagName === 'string') {
-    elem = new ElementWrapper(tagName)
-  } else {
-    elem = new type
-  }
-
-
-  for (let p in attributes) {
-    elem.setAttribute(p, attributes[p])
-  }
-
-  let insertChildren = (children) => {
-    for (let child of children) {
-      if (typeof child === 'string') {
-        child = new TextWrapper(child)
-      }
-      if (typeof child === 'object' && child instanceof Array) {
-        insertChildren(child)
-      }else {
-        elem.appendChild(child)
-      }
-    }
-  }
-  insertChildren(children)
-
-  return elem
-}
 
 export class Component {
   constructor() {
@@ -46,7 +13,7 @@ export class Component {
   }
 
   get root() {
-    if (!this.root) {   
+    if (!this._root) {   
       this._root = this.render().root
     }
     return this._root
@@ -74,6 +41,41 @@ class TextWrapper {
 
 
 
+// 小写认为是原生的标签名, 大写的话,是class或者函数  
+export function createElement(tagName, attributes, ...children) {
+
+  let elem;
+
+  if (typeof tagName === 'string') {
+    elem = new ElementWrapper(tagName)
+  } else {
+    elem = new tagName
+  }
+  // let elem = document.createElement(tagName)
+
+  for (let p in attributes) {
+    elem.setAttribute(p, attributes[p])
+  }
+
+  let insertChildren = (children) => {
+    for (let child of children) {
+      if (typeof child === 'string') {
+        child = new TextWrapper(child)
+      }
+      if (typeof child === 'object' && child instanceof Array) {
+        insertChildren(child)
+      }else {
+        elem.appendChild(child)
+      }
+    }
+  }
+  insertChildren(children)
+
+  return elem
+}
+
+
+
 export function render(component, parentElement) {
   parentElement.appendChild(component.root)
-}
+} 

@@ -11,11 +11,10 @@ class MyComponent extends Component {
 }
 
 
-
-let a = (<MyComponent id="a" class="c">
+render(<MyComponent id = 'a' class='c'>
   <div>123</div>
-  <div>456</div>
-  <div>789</div>
-</MyComponent>)
-
-render(a, document.body)
+  <div>345</div>
+  <div>
+    <div>3445</div>
+  </div>
+</MyComponent>, document.body)
